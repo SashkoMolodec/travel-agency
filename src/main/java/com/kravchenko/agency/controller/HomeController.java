@@ -4,10 +4,12 @@ import com.kravchenko.agency.domain.Role;
 import com.kravchenko.agency.domain.User;
 import com.kravchenko.agency.repos.UserRepo;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -20,17 +22,15 @@ public class HomeController {
     }
 
     @GetMapping("/management")
-    public String greetings(){
-        User user = new User();
-        user.setActive(true);
-        user.setPassword("1111");
-        user.setUsername("sasha");
-        Set<Role> roleSet = new HashSet<>();
-        roleSet.add(Role.USER);
-        user.setRoles(roleSet);
-        userRepo.save(user);
+    public String manage(Model model){
+        List<User> users = userRepo.findAll();
+        model.addAttribute("users", users);
         return "management";
     }
+
+
+
+
 
 
 
