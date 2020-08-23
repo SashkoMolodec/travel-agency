@@ -3,6 +3,7 @@ package com.kravchenko.agency.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
@@ -14,14 +15,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/index/**").hasAnyRole("MANAGER","USER")
-                .antMatchers("/register/**").permitAll()
+                .antMatchers("/register/**","/resources/**","/login/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .formLogin()
-                .and()
-                .httpBasic();
+                .formLogin().loginPage("/login").defaultSuccessUrl("/management", true);
     }
-
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {

@@ -6,19 +6,17 @@
 <body>
     <div class="login-dark" style="background-color: #434a52;">
         <t:nav/>
-        <form action="${pageContext.request.contextPath}/register" name="registerForm" method="post" style="background-color: rgb(52,58,66);">
+        <form method="post" style="background-color: #343a42;" action="login">
             <h2 class="sr-only">Login Form</h2>
-            <h1 class="text-center" style="font-size: 23px;"><strong>Create new account</strong></h1>
-            <div class="illustration"></div>
+            <h1 class="text-center" style="font-size: 23px;"><strong>Greetings!</strong></h1>
+            <div class="illustration"><i class="icon ion-ios-locked-outline"></i></div>
             <div class="form-group"><input class="form-control" type="text" name="username" placeholder="Username"></div>
             <div class="form-group"><input class="form-control" type="password" name="password" placeholder="Password"></div>
-            <div class="form-group"><button class="btn btn-primary btn-block" type="submit">Sign Up</button></div>
-            <a class="forgot" href="${pageContext.request.contextPath}/register">Already have an account? Log in!</a>
-
-
+            <div class="form-group"><button class="btn btn-primary btn-block" type="submit">Log In</button></div><a class="forgot" href="${pageContext.request.contextPath}/register">Don't have an account? Sign up!</a>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         </form>
-    </div>
 
+    </div>
 </body>
+
 </html>
