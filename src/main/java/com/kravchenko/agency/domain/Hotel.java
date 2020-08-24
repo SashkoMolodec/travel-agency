@@ -8,7 +8,7 @@ import java.util.Set;
 public class Hotel{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String title;
@@ -49,5 +49,18 @@ public class Hotel{
 
     public void setRooms(Set<Room> rooms) {
         this.rooms = rooms;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Hotel incRoom(){
+        this.capacity++;
+        return this;
+    }
+    public Hotel decRoom(){
+        this.capacity--;
+        return this;
     }
 }

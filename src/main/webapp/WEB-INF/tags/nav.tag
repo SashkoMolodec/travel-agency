@@ -6,7 +6,7 @@
         <div class="collapse navbar-collapse"
              id="navcol-1">
             <ul class="nav navbar-nav mr-auto">
-                <li class="nav-item" role="presentation"><a class="nav-link active" href="#">Home</a></li>
-            </ul><span class="navbar-text actions"> <a class="login" href="login.html">Log In</a><a class="btn btn-dark action-button" role="button" href="#">Sign Up</a></span></div>
+                <li class="nav-item" role="presentation"><a class="nav-link active" href="/home">Home</a></li>
+            </ul><span class="navbar-text actions"> <a class="login" href="${pageContext.request.contextPath}/login">Log In</a><a class="btn btn-dark action-button" role="button" href="#">Sign Up</a></span></div>
     </div>
 </nav>

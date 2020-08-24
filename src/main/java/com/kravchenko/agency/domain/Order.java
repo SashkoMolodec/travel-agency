@@ -3,6 +3,8 @@ package com.kravchenko.agency.domain;
 import org.springframework.stereotype.Controller;
 
 import javax.persistence.*;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.time.Period;
 
 @Entity
@@ -10,7 +12,7 @@ import java.time.Period;
 public class Order {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @ManyToOne
@@ -21,7 +23,17 @@ public class Order {
     @JoinColumn(name="user_id", nullable=false)
     private User user;
 
-    private Period period;
+    private Timestamp fromDate;
+    private Timestamp toDate;
+    private boolean isActive;
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
 
     public Room getRoom() {
         return room;
@@ -39,11 +51,23 @@ public class Order {
         this.user = user;
     }
 
-    public Period getPeriod() {
-        return period;
+    public Timestamp getFromDate() {
+        return fromDate;
     }
 
-    public void setPeriod(Period period) {
-        this.period = period;
+    public void setFromDate(Timestamp fromDate) {
+        this.fromDate = fromDate;
+    }
+
+    public Timestamp getToDate() {
+        return toDate;
+    }
+
+    public void setToDate(Timestamp toDate) {
+        this.toDate = toDate;
+    }
+
+    public Long getId() {
+        return id;
     }
 }

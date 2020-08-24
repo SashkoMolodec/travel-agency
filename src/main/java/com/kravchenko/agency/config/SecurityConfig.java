@@ -18,7 +18,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/register/**","/resources/**","/login/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .formLogin().loginPage("/login").defaultSuccessUrl("/management", true);
+                .formLogin().loginPage("/login").defaultSuccessUrl("/home", true);
     }
 
     @Autowired

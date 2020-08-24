@@ -13,7 +13,7 @@ import java.util.Set;
 public class User implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String username;
@@ -25,7 +25,7 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Order> orders;
 
     public List<Order> getOrders() {
@@ -94,4 +94,6 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return isActive();
     }
+
+    public Long getId() { return id; }
 }
