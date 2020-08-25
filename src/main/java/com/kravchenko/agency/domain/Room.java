@@ -61,41 +61,4 @@ public class Room {
                 ", orders=" + orders +
                 '}';
     }
-
-    public static List<Room> getFreeRooms(RoomRepo roomRepo, Instant instant){
-        List<Room> freeRooms = new ArrayList<>();
-        for(Room room: roomRepo.findAll()){
-            boolean roomFree = true;
-            for(Order order: room.getOrders()){
-                boolean contains = (!instant.isBefore(order.getFromDate().toInstant()))
-                        && (instant.isBefore(order.getToDate().toInstant()));
-
-                if(contains){
-                    roomFree = false;
-                    break;
-                }
-            }
-            if(roomFree) freeRooms.add(room);
-        }
-        return freeRooms;
-    }
-
-
-    public static List<Room> getBusyRooms(RoomRepo roomRepo, Instant instant){
-        List<Room> busyRooms = new ArrayList<>();
-        for(Room room: roomRepo.findAll()){
-            boolean roomBusy = false;
-            for(Order order: room.getOrders()){
-                boolean contains = (!instant.isBefore(order.getFromDate().toInstant()))
-                        && (instant.isBefore(order.getToDate().toInstant()));
-
-                if(contains){
-                    roomBusy = true;
-                    break;
-                }
-            }
-            if(roomBusy) busyRooms.add(room);
-        }
-        return busyRooms;
-    }
 }

@@ -6,7 +6,7 @@
 <body>
     <div class="login-dark" style="background-color: #434a52;">
         <t:nav/>
-        <form method="post" style="background-color: #343a42;" action="login">
+        <form method="post" style="background-color: #343a42;" action="${pageContext.request.contextPath}/login">
             <h2 class="sr-only">Login Form</h2>
             <h1 class="text-center" style="font-size: 23px;"><strong>Greetings!</strong></h1>
             <div class="illustration"><i class="icon ion-ios-locked-outline"></i></div>

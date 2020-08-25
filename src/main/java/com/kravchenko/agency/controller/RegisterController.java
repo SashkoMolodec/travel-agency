@@ -3,6 +3,7 @@ package com.kravchenko.agency.controller;
 import com.kravchenko.agency.domain.Role;
 import com.kravchenko.agency.domain.User;
 import com.kravchenko.agency.repos.UserRepo;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,6 +32,9 @@ public class RegisterController {
         if (bindingResult.hasErrors() | userFromDb != null) {
             return "register";
         }
+
+        String encoded = new BCryptPasswordEncoder().encode(user.getPassword());
+        user.setPassword(encoded);
 
         user.setActive(true);
         user.setRoles(Collections.singleton(Role.USER));
