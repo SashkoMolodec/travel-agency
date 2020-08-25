@@ -1,11 +1,7 @@
 package com.kravchenko.agency.domain;
 
-import org.springframework.stereotype.Controller;
-
 import javax.persistence.*;
-import java.sql.Time;
 import java.sql.Timestamp;
-import java.time.Period;
 
 @Entity
 @Table(name = "orders")
