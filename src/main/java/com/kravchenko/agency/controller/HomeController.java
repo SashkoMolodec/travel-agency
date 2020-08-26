@@ -1,15 +1,15 @@
 package com.kravchenko.agency.controller;
 
-import com.kravchenko.agency.domain.Hotel;
-import com.kravchenko.agency.domain.Order;
-import com.kravchenko.agency.domain.Room;
-import com.kravchenko.agency.domain.User;
+import com.kravchenko.agency.domain.*;
 import com.kravchenko.agency.repos.HotelRepo;
 import com.kravchenko.agency.repos.OrderRepo;
 import com.kravchenko.agency.repos.RoomRepo;
 import com.kravchenko.agency.repos.UserRepo;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -109,5 +109,22 @@ public class HomeController {
                 orderRepo.save(order);
             }
         }
+    }
+
+    @GetMapping("/becomeManager")
+    public String becomeManager(Principal principal){
+        User user = userRepo.findByUsername(principal.getName());
+
+        Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>) user.getAuthorities();
+        authorities.add(new SimpleGrantedAuthority("ROLE_MANAGER"));
+
+        SecurityContextHolder.getContext().setAuthentication(
+                new UsernamePasswordAuthenticationToken(
+                        SecurityContextHolder.getContext().getAuthentication().getPrincipal(),
+                        SecurityContextHolder.getContext().getAuthentication().getCredentials(),
+                        authorities)
+        );
+
+        return "redirect:/home";
     }
 }

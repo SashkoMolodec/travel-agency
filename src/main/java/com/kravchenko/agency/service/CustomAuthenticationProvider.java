@@ -1,5 +1,6 @@
 package com.kravchenko.agency.service;
 
+import com.kravchenko.agency.domain.Role;
 import com.kravchenko.agency.domain.User;
 import com.kravchenko.agency.repos.UserRepo;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -7,10 +8,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Component
 public class CustomAuthenticationProvider implements AuthenticationProvider {
@@ -29,14 +33,15 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String name = authentication.getName();
         String password = authentication.getCredentials().toString();
 
-        Collection<? extends GrantedAuthority> roleSet = authentication.getAuthorities();
+        List<GrantedAuthority> grantedAuths = new ArrayList<>();
+        grantedAuths.add(new SimpleGrantedAuthority("ROLE_USER"));
 
         try{
             User user = userRepo.findByUsername(name);
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             if(passwordEncoder.matches(password, user.getPassword())){
                 return new UsernamePasswordAuthenticationToken(
-                        name, password, roleSet);
+                        name, password, grantedAuths);
             }
             else return null;
 

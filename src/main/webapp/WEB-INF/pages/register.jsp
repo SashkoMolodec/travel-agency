@@ -13,7 +13,7 @@
             <div class="form-group"><input class="form-control" type="text" name="username" placeholder="Username"></div>
             <div class="form-group"><input class="form-control" type="password" name="password" placeholder="Password"></div>
             <div class="form-group"><button class="btn btn-primary btn-block" type="submit">Sign Up</button></div>
-            <a class="forgot" href="${pageContext.request.contextPath}/register">Already have an account? Log in!</a>
+            <a class="forgot" href="${pageContext.request.contextPath}/login">Already have an account? Log in!</a>
 
 
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
