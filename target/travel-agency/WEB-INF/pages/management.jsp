@@ -15,7 +15,7 @@
             </div>
         </div>
     </div>
-    <div>
+    <div style="margin-bottom: 200px">
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
@@ -99,6 +99,7 @@
         </div>
     </div>
     </div>
+    <t:footer/>
 </body>
 
 </html>

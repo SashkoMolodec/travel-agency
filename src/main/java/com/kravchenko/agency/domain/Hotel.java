@@ -1,12 +1,16 @@
 package com.kravchenko.agency.domain;
 
+import org.springframework.util.ConcurrentReferenceHashMap;
+
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.stream.Collectors;
 
 @Entity
@@ -73,15 +77,15 @@ public class Hotel{
         return hotelList.stream().map(Hotel::getCountry).collect(Collectors.toSet());
     }
 
-    public static Map<Hotel, Integer> getFreeHotelsRooms(List<Hotel> hotelList, Instant instant) {
-        Map<Hotel, Integer> hotelsList = new ConcurrentHashMap<>();
+    public static Map<Hotel, Integer> getFreeHotelsRooms(List<Hotel> hotelList, Instant from, Instant to) {
+        Map<Hotel, Integer> hotelsList = new ConcurrentReferenceHashMap<>();
         for(Hotel hotel: hotelList){
             int busyRooms = 0;
             for(Room room: hotel.getRooms()){
                 for(Order order: room.getOrders()){
 
-                    boolean contains = (!instant.isBefore(order.getFromDate().toInstant()))
-                            && (instant.isBefore(order.getToDate().toInstant()));
+                    boolean contains = (from.isBefore(order.getToDate().toInstant()))
+                            && (to.isAfter(order.getFromDate().toInstant()));
 
                     if(contains){
                         busyRooms++;
@@ -89,9 +93,13 @@ public class Hotel{
                     }
                 }
             }
-            hotelsList.put(hotel, hotel.capacity - busyRooms);
+            int freeRooms = hotel.capacity - busyRooms;
+            if(freeRooms < 0) freeRooms = 0;
+            hotelsList.put(hotel, freeRooms);
         }
         return hotelsList;
     }
+
+
 
 }

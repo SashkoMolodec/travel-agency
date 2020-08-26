@@ -23,6 +23,15 @@ public class Order {
     private Timestamp toDate;
     private boolean isActive;
 
+    public Order() {}
+    public Order(Room room, User user, Timestamp fromDate, Timestamp toDate, boolean isActive) {
+        this.room = room;
+        this.user = user;
+        this.fromDate = fromDate;
+        this.toDate = toDate;
+        this.isActive = isActive;
+    }
+
     public boolean isActive() {
         return isActive;
     }

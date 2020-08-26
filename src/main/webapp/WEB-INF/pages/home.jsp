@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <t:head/>
@@ -13,7 +14,7 @@
                 <i class="icon ion-ios-arrow-down d-xl-flex justify-content-xl-center" style="font-size: 40px;margin-top: 0px;padding-top: 15px;"></i></div>
         </div>
     </div>
-    <div class="border-dark" style="margin-top: 25px;">
+    <div class="border-dark" style="margin-top: 25px; margin-bottom: 100px">
         <div class="container border-white">
             <div class="row text-center">
                 <div class="col-md-4 text-center" style="background-color: #343a42; padding-top: 18px;">
@@ -41,15 +42,26 @@
                     </form>
                 </div>
                 <div class="col-md-8 visible" style="padding-top: 0px;margin-top: 0px;">
+                    <p class="text-left" style="font-size: 12px;color: #f8f9fa;">Free rooms from
+                        <fmt:formatDate value="${fromDate}" pattern="MM/dd/yyyy"/>
+                        to <fmt:formatDate value="${toDate}" pattern="MM/dd/yyyy"/></p>
                     <div class="list-group m-md-auto m-lg-auto m-xl-auto" style="margin-top: 20px;">
 
                         <c:forEach items="${hotelList}" var="hotel">
                         <a class="list-group-item list-group-item-action list-group-item-dark text-light bg-dark border-dark">
                             <div class="row" style="height: 60px;">
                                 <div class="col m-auto" style="width: auto;height: auto;max-width: 20%;"><span>${hotel.key.country}</span></div>
-                                <div class="col m-auto" style="width: 50%;"><span>${hotel.key.title}</span></div>
-                                <div class="col m-auto" style="width: auto;max-width: 20%;"><span>${hotel.value} rooms</span></div>
+                                <div class="col m-auto" style="width: 50%;"><span id="hotelTitle">${hotel.key.title}</span></div>
+                                <div class="col m-auto" style="width: auto;max-width: 20%;">
+                                    <div class="row">
+                                        <div class="col"><span style="font-size: 12px">${hotel.value} rooms available</span></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col" style="margin-top: 6px;"><button onclick="submitOrder(${hotel.key.id})" class="btn btn-primary" type="submit" style="font-size: 12px;">Book!</button></div>
+                                    </div>
+                                </div>
                             </div>
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </a>
                         </c:forEach>
                     </div>
@@ -57,33 +69,30 @@
             </div>
         </div>
     </div>
-    <div class="footer-dark" style="margin-top: 100px;background-color: #343a40;">
-        <footer>
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-6 col-md-3 item">
-                        <h3>About</h3>
-                        <ul>
-                            <li><a href="#">Company</a></li>
-                            <li><a href="#">Team</a></li>
-                            <li><a href="#">Careers</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-md-6 item text">
-                        <h3>Book!</h3>
-                        <p>Best website to spend your money!</p>
-                    </div>
-                    <div class="col item social"><a href="#"><i class="icon ion-social-facebook"></i></a><a href="#"><i class="icon ion-social-twitter"></i></a><a href="#"><i class="icon ion-social-snapchat"></i></a><a href="#"><i class="icon ion-social-instagram"></i></a></div>
-                </div>
-                <p class="copyright">Company Name © 2017</p>
-            </div>
-        </footer>
-    </div>
+    <t:footer/>
     <script>
+        var token =  $('input[name="${_csrf.parameterName}"]').attr('value');
+        function submitOrder(hotelId){
+            var date = $('#datePicker').val();
+            var daysPeriod = $('#daysInputPicker').val();
+            $.ajax({
+                method:'POST',
+                data:{
+                    date:date,
+                    daysPeriod:daysPeriod,
+                    hotelId:hotelId
+                },
+                headers: {
+                    'X-CSRF-Token': token
+                },
+                url:"/home/bookHotel",
+                success: funcSuccess
+            });
+        }
+            function funcSuccess() {
+                location.reload()
+            }
 
-        $('#daysRangePicker, #daysInputPicker').on('input', function(){
-            $(this).siblings('#daysRangePicker, #daysInputPicker').val(this.value);
-        });
 
         function reload() {
             localStorage.setItem('selectedCountry',$('#slctCountry').val());
@@ -104,8 +113,14 @@
 
                 $('#daysInputPicker').val(selectedDays)
                 $('#daysRangePicker').val(selectedDays)
+
             }
         });
+
+        $('#daysRangePicker, #daysInputPicker').on('input', function(){
+            $(this).siblings('#daysRangePicker, #daysInputPicker').val(this.value);
+        });
+
     </script>
 </body>
 
