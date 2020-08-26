@@ -25,7 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/becomeManager").hasRole("USER")
                 .antMatchers("/management/**").hasRole("MANAGER")
-                .antMatchers("/register/**","/resources/**","/login/**").permitAll()
+                .antMatchers("/register/**","/resources/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/login").defaultSuccessUrl("/home", true).permitAll();

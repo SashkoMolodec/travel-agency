@@ -17,7 +17,7 @@
     <div class="border-dark" style="margin-top: 25px; margin-bottom: 100px">
         <div class="container border-white">
             <div class="row text-center">
-                <div class="col-md-4 text-center" style="background-color: #343a42; padding-top: 18px;">
+                <div class="col-md-4 text-center" style="background-color: #343a42; padding-top: 18px; max-height: 391px">
                     <div class="row" style="margin-top: 6px;">
                         <div class="col" style="color: #f8f9fa;"><span class="d-xl-flex justify-content-xl-start">Filters</span></div>
                         <div class="col"><i class="icon ion-funnel d-block d-md-flex justify-content-md-center align-items-md-center justify-content-xl-end" style="color: #f8f9fa;font-size: 21px;margin: 0px;padding: 0px;margin-top: 0px;margin-bottom: 0px;padding-top: 0px;margin-right: 6px;"></i></div>
@@ -56,9 +56,11 @@
                                     <div class="row">
                                         <div class="col"><span style="font-size: 12px">${hotel.value} rooms available</span></div>
                                     </div>
+                                    <c:if test="${hotel.value != 0}">
                                     <div class="row">
                                         <div class="col" style="margin-top: 6px;"><button onclick="submitOrder(${hotel.key.id})" class="btn btn-primary" type="submit" style="font-size: 12px;">Book!</button></div>
                                     </div>
+                                    </c:if>
                                 </div>
                             </div>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>

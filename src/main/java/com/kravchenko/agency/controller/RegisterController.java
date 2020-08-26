@@ -10,6 +10,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.validation.Valid;
+import java.security.Principal;
 import java.util.Collections;
 
 @Controller
@@ -22,14 +24,15 @@ public class RegisterController {
     }
 
     @GetMapping("/register")
-    public String registration(){
-        return "register";
+    public String registration(Principal principal){
+        return principal == null ?  "register" : "redirect:/home";
     }
 
     @PostMapping("/register")
-    public String confirmRegistration(User user, BindingResult bindingResult){
+    public String confirmRegistration(@Valid User user, BindingResult bindingResult, Model model){
         User userFromDb = userRepo.findByUsername(user.getUsername());
         if (bindingResult.hasErrors() | userFromDb != null) {
+            model.addAttribute("isError", true);
             return "register";
         }
 

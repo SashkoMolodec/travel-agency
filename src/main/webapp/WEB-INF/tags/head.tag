@@ -6,8 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>travel-agency</title>
 
-    <link rel="stylesheet" href="<c:url value="/resources/fonts/ionicons.min.css"/>">
-    <link rel="stylesheet" href="<c:url value="/resources/bootstrap/css/bootstrap.min.css"/>" >
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.1.2/cjs/ionicons.cjs.js" integrity="sha512-v+I+njNdfChZYsA6UjfvoCfVuC59kiuqEALSEgHloBjhNaMlcWxEFWU2nHl1c/4vWvOtWugbAZwE6Ae4iwqF9A==" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
     <link rel="stylesheet" href="<c:url value="/resources/css/Footer-Dark.css"/>">
     <link rel="stylesheet" href="<c:url value="/resources/css/Highlight-Blue.css"/>">
     <link rel="stylesheet" href="<c:url value="/resources/css/Login-Form-Dark.css"/>">

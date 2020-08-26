@@ -5,21 +5,12 @@
     <footer>
         <div class="container">
             <div class="row">
-                <div class="col-sm-6 col-md-3 item">
-                    <h3>About</h3>
-                    <ul>
-                        <li><a href="#">Company</a></li>
-                        <li><a href="#">Team</a></li>
-                        <li><a href="#">Careers</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-6 item text">
+                <div class="col-md-6 text-center m-auto item text" style="width: 100%;max-height: 100%;">
                     <h3>Book!</h3>
-                    <p>Best website to spend your money!</p>
+                    <p class="d-xl-flex justify-content-xl-center">Best website to spend your money!</p>
                 </div>
-                <div class="col item social"><a href="#"><i class="icon ion-social-facebook"></i></a><a href="#"><i class="icon ion-social-twitter"></i></a><a href="#"><i class="icon ion-social-snapchat"></i></a><a href="#"><i class="icon ion-social-instagram"></i></a></div>
             </div>
-            <p class="copyright">Company Name © 2017</p>
+            <p class="copyright">Kravchenko Oleksandr © 2020</p>
         </div>
     </footer>
 </div>

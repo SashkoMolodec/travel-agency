@@ -1,6 +1,5 @@
 package com.kravchenko.agency.repos;
 
-import com.kravchenko.agency.domain.Order;
 import com.kravchenko.agency.domain.Room;
 import org.springframework.data.jpa.repository.JpaRepository;
 

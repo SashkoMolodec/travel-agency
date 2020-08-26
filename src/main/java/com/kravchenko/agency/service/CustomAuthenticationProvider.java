@@ -13,7 +13,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Component
@@ -38,6 +37,10 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
         try{
             User user = userRepo.findByUsername(name);
+
+            if(user.getRoles().contains(Role.MANAGER))
+                grantedAuths.add(new SimpleGrantedAuthority("ROLE_MANAGER"));
+
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             if(passwordEncoder.matches(password, user.getPassword())){
                 return new UsernamePasswordAuthenticationToken(

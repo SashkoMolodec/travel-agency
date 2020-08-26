@@ -1,16 +1,13 @@
 package com.kravchenko.agency.domain;
 
-import org.springframework.util.ConcurrentReferenceHashMap;
-
 import javax.persistence.*;
-import java.sql.Timestamp;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.Instant;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.stream.Collectors;
 
 @Entity
@@ -21,8 +18,11 @@ public class Hotel{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotBlank
     private String title;
+    @NotBlank
     private String country;
+    @NotNull
     private int capacity;
 
     @OneToMany(mappedBy = "hotel", fetch = FetchType.EAGER)
@@ -78,7 +78,7 @@ public class Hotel{
     }
 
     public static Map<Hotel, Integer> getFreeHotelsRooms(List<Hotel> hotelList, Instant from, Instant to) {
-        Map<Hotel, Integer> hotelsList = new ConcurrentReferenceHashMap<>();
+        Map<Hotel, Integer> hotelsList = new LinkedHashMap<>();
         for(Hotel hotel: hotelList){
             int busyRooms = 0;
             for(Room room: hotel.getRooms()){
@@ -100,6 +100,14 @@ public class Hotel{
         return hotelsList;
     }
 
+    public boolean hasEmptyRoomWithoutOrders() {
+        if (capacity > this.getRooms().size())
+            return true;
 
-
+        for (Room room : this.getRooms()) {
+            if (room.getOrders().isEmpty())
+                return true;
+        }
+        return false;
+    }
 }

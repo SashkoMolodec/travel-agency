@@ -18,14 +18,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.security.Principal;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Map;
+import java.util.Optional;
 
 @Controller
 public class HomeController {
@@ -114,17 +116,17 @@ public class HomeController {
     @GetMapping("/becomeManager")
     public String becomeManager(Principal principal){
         User user = userRepo.findByUsername(principal.getName());
+        user.getRoles().add(Role.MANAGER);
+        userRepo.save(user);
 
         Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>) user.getAuthorities();
         authorities.add(new SimpleGrantedAuthority("ROLE_MANAGER"));
-
         SecurityContextHolder.getContext().setAuthentication(
                 new UsernamePasswordAuthenticationToken(
                         SecurityContextHolder.getContext().getAuthentication().getPrincipal(),
                         SecurityContextHolder.getContext().getAuthentication().getCredentials(),
                         authorities)
         );
-
         return "redirect:/home";
     }
 }

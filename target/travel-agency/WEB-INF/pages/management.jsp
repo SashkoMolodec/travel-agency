@@ -2,6 +2,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@taglib uri = "http://www.springframework.org/tags/form" prefix = "form"%>
 <!DOCTYPE html>
 <html>
 <t:head/>
@@ -40,9 +41,6 @@
                         </a>
                         </c:forEach>
                     </div>
-                    <%--<div
-                        class="list-group m-md-auto m-lg-auto m-xl-auto" style="margin-top: 20px;color: rgb(52,58,66);">
-                        <a class="list-group-item list-group-item-action list-group-item-dark text-light bg-dark border-dark"><span style="font-size: 24px;margin-top: 0px;margin-bottom: 0px;padding-bottom: 0px;">Danya</span><ul class="list-group" style="margin-top: 12px;"><li class="list-group-item" style="background-color: #1e2833;"><div class="row"><div class="col"><span style="color: #f8f9fa;">Hotel Kozak</span></div><div class="col"><span style="color: #f8f9fa;">20.05.2020 - 21.05.2020</span></div><div class="col"><span style="color: #f8f9fa;">Room: 1</span></div></div></li><li class="list-group-item" style="background-color: #1e2833;"><div class="row"><div class="col"><span style="color: #f8f9fa;">Hotel la Fleur</span></div><div class="col"><span style="color: #f8f9fa;">20.05.2020 - 21.05.2020</span></div><div class="col"><span style="color: #f8f9fa;">Room: 2</span></div></div></li></ul></a></div>--%>
             </div>
             <div class="col-md-6" style="padding-right: 15px;">
                 <div class="row" style="padding-right: 21px;padding-left: 21px;margin-bottom: 12px;">
@@ -64,9 +62,14 @@
                                         </thead>
                                         <tbody>
                                         <tr>
+
                                             <form action="/management/decrement-room/${hotel.id}" method="post">
                                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                                                <td class="d-inline-flex float-left justify-content-xl-center" style="width: 30px;color: #f8f9fa;height: 50px;"><button class="btn btn-primary text-center d-xl-flex justify-content-xl-center align-items-xl-center" type="submit" style="width: 100%;height: 35px;font-size: 30px;padding-top: 0px;padding-bottom: 9px;margin-bottom: 0px;">-</button></td>
+                                                <td class="d-inline-flex float-left justify-content-xl-center" style="width: 30px;color: #f8f9fa;height: 50px;">
+                                                    <c:if test="${hotel.hasEmptyRoomWithoutOrders()}">
+                                                    <button class="btn btn-primary text-center d-xl-flex justify-content-xl-center align-items-xl-center" type="submit" style="width: 100%;height: 35px;font-size: 30px;padding-top: 0px;padding-bottom: 9px;margin-bottom: 0px;">-</button>
+                                                    </c:if>
+                                                </td>
                                             </form>
                                             <td class="d-inline-flex justify-content-xl-center" style="width: 30px;color: #f8f9fa;margin-right: 18px;margin-left: 28px;">${hotel.capacity}</td>
                                             <form action="/management/increment-room/${hotel.id}" method="post">
@@ -84,10 +87,16 @@
                     <a class="list-group-item list-group-item-action list-group-item-dark text-light bg-dark border-dark" style="padding-top: 0px;">
                         <form method="post" action="${pageContext.request.contextPath}/management/addHotel">
                             <div class="form-row" style="height: 65px;padding-top: 0px;">
-                                <div class="col d-xl-flex m-auto" style="width: 33%;height: auto;max-width: 100%;"><input class="form-control d-xl-flex justify-content-xl-center align-items-xl-center" type="text" style="width: 100%;" name="title"></div>
-                                <div class="col d-xl-flex m-auto" style="width: 33%;height: auto;max-width: 100%;"><input class="form-control d-xl-flex justify-content-xl-center align-items-xl-center" type="text" style="width: 100%;" name="country"></div>
-                                <div class="col m-auto" style="width: 33%;"><input class="form-control d-xl-flex justify-content-xl-center align-items-xl-center" type="number" style="width: 100%;" min="1" max="1000" name="capacity"></div>
+                                <div class="col d-xl-flex m-auto" style="width: 33%;height: auto;max-width: 100%;">
+                                    <input class="form-control d-xl-flex justify-content-xl-center align-items-xl-center" type="text" style="width: 100%;" name="title"></div>
+                                <div class="col d-xl-flex m-auto" style="width: 33%;height: auto;max-width: 100%;">
+                                    <input class="form-control d-xl-flex justify-content-xl-center align-items-xl-center" type="text" style="width: 100%;" name="country"></div>
+                                <div class="col m-auto" style="width: 33%;">
+                                    <input class="form-control d-xl-flex justify-content-xl-center align-items-xl-center" type="number" style="width: 100%;" min="1" max="1000" name="capacity"></div>
                             </div>
+                            <c:if test="${isError}">
+                                <span class="text-danger">Some fields are empty!</span>
+                            </c:if>
                             <div class="form-row">
                                 <div class="col"><button class="btn btn-primary d-xl-flex m-auto" type="submit">Add</button></div>
                             </div>

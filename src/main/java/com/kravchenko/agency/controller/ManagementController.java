@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,8 +44,9 @@ public class ManagementController {
     }
 
     @PostMapping("/management/addHotel")
-    public String addHotel(Hotel hotel, BindingResult bindingResult){
+    public String addHotel(@Valid Hotel hotel, BindingResult bindingResult, Model model){
         if (bindingResult.hasErrors()) {
+            model.addAttribute("isError", true);
             return "management";
         }
         hotelRepo.save(hotel);

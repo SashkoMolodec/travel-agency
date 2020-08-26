@@ -8,13 +8,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.security.Principal;
 
 @Controller
 public class LoginController {
 
     @GetMapping("/login")
-    public String login(){
-        return "login";
+    public String login(Principal principal){
+        return principal == null ?  "login" : "redirect:/home";
     }
 
     @GetMapping(value = "/logout")
