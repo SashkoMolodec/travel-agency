@@ -39,7 +39,7 @@ public abstract class AbstractDao<T> implements Dao<T> {
     public void save(T t) {
         Session session = sessionFactory.getCurrentSession();
         session.beginTransaction();
-        sessionFactory.getCurrentSession().save(t);
+        session.save(t);
         session.getTransaction().commit();
     }
 
@@ -47,7 +47,7 @@ public abstract class AbstractDao<T> implements Dao<T> {
     public void update(T t) {
         Session session = sessionFactory.getCurrentSession();
         session.beginTransaction();
-        sessionFactory.getCurrentSession().update(t);
+        session.update(t);
         session.getTransaction().commit();
     }
 
