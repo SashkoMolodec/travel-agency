@@ -1,10 +1,10 @@
 package com.kravchenko.agency.controller;
 
 import com.kravchenko.agency.domain.*;
-import com.kravchenko.agency.repos.HotelRepo;
-import com.kravchenko.agency.repos.OrderRepo;
-import com.kravchenko.agency.repos.RoomRepo;
-import com.kravchenko.agency.repos.UserRepo;
+import com.kravchenko.agency.service.HotelService;
+import com.kravchenko.agency.service.OrderService;
+import com.kravchenko.agency.service.RoomService;
+import com.kravchenko.agency.service.UserService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,16 +32,16 @@ import java.util.Optional;
 @Controller
 public class HomeController {
 
-    private final HotelRepo hotelRepo;
-    private final RoomRepo roomRepo;
-    private final UserRepo userRepo;
-    private final OrderRepo orderRepo;
+    private final HotelService hotelService;
+    private final RoomService roomService;
+    private final UserService userService;
+    private final OrderService orderService;
 
-    public HomeController(HotelRepo hotelRepo, RoomRepo roomRepo, UserRepo userRepo, OrderRepo orderRepo) {
-        this.hotelRepo = hotelRepo;
-        this.roomRepo = roomRepo;
-        this.userRepo = userRepo;
-        this.orderRepo = orderRepo;
+    public HomeController(HotelService hotelService, RoomService roomService, UserService userService, OrderService orderService) {
+        this.hotelService = hotelService;
+        this.roomService = roomService;
+        this.userService = userService;
+        this.orderService = orderService;
     }
 
     @GetMapping("/home")
@@ -49,12 +49,12 @@ public class HomeController {
 
         Instant now = Instant.now();
         Instant tomorrow = now.plus(1, ChronoUnit.DAYS);
-        Map<Hotel, Integer> hotelsList = Hotel.getFreeHotelsRooms(hotelRepo.findAll(), now, tomorrow);
+        Map<Hotel, Integer> hotelsList = Hotel.getFreeHotelsRooms(hotelService.list(), now, tomorrow);
 
         model.addAttribute("hotelList", hotelsList);
         //hotelsList.forEach((key, val) -> System.out.println(key.getTitle() + ": " + val));
 
-        model.addAttribute("countries", Hotel.getAllHotelsCountries(hotelRepo.findAll()));
+        model.addAttribute("countries", Hotel.getAllHotelsCountries(hotelService.list()));
         model.addAttribute("fromDate", Timestamp.from(now));
         model.addAttribute("toDate", Timestamp.from(tomorrow));
         return "home";
@@ -69,7 +69,7 @@ public class HomeController {
         Instant dateFrom = date.toInstant();
         Instant dateTo = date.toInstant().plus(daysPeriod, ChronoUnit.DAYS);
 
-        Map<Hotel, Integer> hotelsList = Hotel.getFreeHotelsRooms(hotelRepo.findAll(), dateFrom, dateTo);
+        Map<Hotel, Integer> hotelsList = Hotel.getFreeHotelsRooms(hotelService.list(), dateFrom, dateTo);
 
         if (!country.equals("world"))
             hotelsList.forEach((key, val) -> {
@@ -80,7 +80,7 @@ public class HomeController {
         model.addAttribute("hotelList", hotelsList);
         //hotelsList.forEach((key, val) -> System.out.println(key.getTitle() + ": " + val));
 
-        model.addAttribute("countries", Hotel.getAllHotelsCountries(hotelRepo.findAll()));
+        model.addAttribute("countries", Hotel.getAllHotelsCountries(hotelService.list()));
         model.addAttribute("fromDate", Timestamp.from(dateFrom));
         model.addAttribute("toDate", Timestamp.from(dateTo));
         return "home";
@@ -89,15 +89,15 @@ public class HomeController {
     @PostMapping("/home/bookHotel")
     @ResponseStatus(value = HttpStatus.OK)
     private void submitOrder(@RequestParam Map<String, String> reqParam, Principal principal) {
-        User user = userRepo.findByUsername(principal.getName());
+        Optional<User> user = userService.findByUsername(principal.getName());
 
         String idHotel = reqParam.get("hotelId");
         String dateString = reqParam.get("date");
         String daysString = reqParam.get("daysPeriod");
 
-        if (idHotel != null && dateString != null && daysString != null) {
+        if (idHotel != null && dateString != null && daysString != null && user.isPresent()) {
 
-            Optional<Hotel> hotel = hotelRepo.findById(Long.parseLong(idHotel));
+            Optional<Hotel> hotel = hotelService.findById(Long.parseLong(idHotel));
 
             LocalDate date = LocalDate.parse(dateString);
             Instant dateFrom = date.atStartOfDay(ZoneId.of("UTC")).toInstant();
@@ -106,20 +106,23 @@ public class HomeController {
 
             if(hotel.isPresent()) {
                 Room room = Room.pickRoomForOrder(hotel.get(), dateFrom, dateTo);
-                roomRepo.save(room);
-                Order order = new Order(room, user, Timestamp.from(dateFrom), Timestamp.from(dateTo), true);
-                orderRepo.save(order);
+                roomService.save(room);
+                Order order = new Order(room, user.get(), Timestamp.from(dateFrom), Timestamp.from(dateTo), true);
+                orderService.save(order);
             }
         }
     }
 
     @GetMapping("/becomeManager")
     public String becomeManager(Principal principal){
-        User user = userRepo.findByUsername(principal.getName());
-        user.getRoles().add(Role.MANAGER);
-        userRepo.save(user);
+        Optional<User> user = userService.findByUsername(principal.getName());
 
-        Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>) user.getAuthorities();
+        if(user.isPresent()){
+            user.get().getRoles().add(Role.MANAGER);
+            userService.update(user.get());
+        }
+
+        Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>) user.get().getAuthorities();
         authorities.add(new SimpleGrantedAuthority("ROLE_MANAGER"));
         SecurityContextHolder.getContext().setAuthentication(
                 new UsernamePasswordAuthenticationToken(
@@ -129,4 +132,5 @@ public class HomeController {
         );
         return "redirect:/home";
     }
+
 }

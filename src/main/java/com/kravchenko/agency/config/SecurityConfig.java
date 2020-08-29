@@ -1,6 +1,7 @@
 package com.kravchenko.agency.config;
-
-import com.kravchenko.agency.service.CustomAuthenticationProvider;
+/*
+import com.kravchenko.agency.security.CustomAuthenticationProvider;*/
+import com.kravchenko.agency.security.CustomAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -25,7 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/becomeManager").hasRole("USER")
                 .antMatchers("/management/**").hasRole("MANAGER")
-                .antMatchers("/register/**","/resources/**").permitAll()
+                .antMatchers("/register/**","/resources/**","/test/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/login").defaultSuccessUrl("/home", true).permitAll();

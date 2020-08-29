@@ -66,12 +66,7 @@
       <version>2.3.3</version>  
       <scope>provided</scope> 
     </dependency>  
-    <!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-jpa -->  
-    <dependency> 
-      <groupId>org.springframework.data</groupId>  
-      <artifactId>spring-data-jpa</artifactId>  
-      <version>2.3.3.RELEASE</version> 
-    </dependency>  
+
     <!-- https://mvnrepository.com/artifact/org.springframework/spring-orm -->  
     <dependency> 
       <groupId>org.springframework</groupId>  
@@ -96,19 +91,7 @@
       <groupId>org.apache.logging.log4j</groupId>  
       <artifactId>log4j-core</artifactId>  
       <version>2.13.3</version> 
-    </dependency>  
-    <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->  
-    <dependency> 
-      <groupId>org.hibernate</groupId>  
-      <artifactId>hibernate-core</artifactId>  
-      <version>5.4.20.Final</version> 
-    </dependency>  
-    <!-- https://mvnrepository.com/artifact/org.hibernate.common/hibernate-commons-annotations -->  
-    <dependency> 
-      <groupId>org.hibernate.common</groupId>  
-      <artifactId>hibernate-commons-annotations</artifactId>  
-      <version>5.1.0.Final</version> 
-    </dependency>  
+    </dependency>
     <!-- https://mvnrepository.com/artifact/javax.persistence/javax.persistence-api -->  
     <dependency> 
       <groupId>javax.persistence</groupId>  
@@ -132,13 +115,36 @@
       <groupId>javax.validation</groupId>  
       <artifactId>validation-api</artifactId>  
       <version>2.0.1.Final</version> 
-    </dependency>  
-    <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-validator -->  
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.hibernate.common/hibernate-commons-annotations -->
+    <dependency>
+      <groupId>org.hibernate.common</groupId>
+      <artifactId>hibernate-commons-annotations</artifactId>
+      <version>5.1.0.Final</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-validator -->
     <dependency> 
       <groupId>org.hibernate</groupId>  
       <artifactId>hibernate-validator</artifactId>  
       <version>6.1.5.Final</version> 
-    </dependency> 
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-core</artifactId>
+      <version>5.4.20.Final</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.apache.tomcat/tomcat-dbcp -->
+    <dependency>
+      <groupId>org.apache.tomcat</groupId>
+      <artifactId>tomcat-dbcp</artifactId>
+      <version>10.0.0-M7</version>
+    </dependency>
+
   </dependencies>  
   <build> 
     <finalName>travel-agency</finalName>  
