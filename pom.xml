@@ -85,12 +85,6 @@
       <groupId>org.springframework.security</groupId>  
       <artifactId>spring-security-config</artifactId>  
       <version>${spring.version-security}</version> 
-    </dependency>  
-    <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->  
-    <dependency> 
-      <groupId>org.apache.logging.log4j</groupId>  
-      <artifactId>log4j-core</artifactId>  
-      <version>2.13.3</version> 
     </dependency>
     <!-- https://mvnrepository.com/artifact/javax.persistence/javax.persistence-api -->  
     <dependency> 
@@ -108,7 +102,7 @@
     <dependency> 
       <groupId>org.springframework.security</groupId>  
       <artifactId>spring-security-taglibs</artifactId>  
-      <version>5.3.4.RELEASE</version> 
+      <version>${spring.version-security}</version>
     </dependency>  
     <!-- https://mvnrepository.com/artifact/javax.validation/validation-api -->  
     <dependency> 
