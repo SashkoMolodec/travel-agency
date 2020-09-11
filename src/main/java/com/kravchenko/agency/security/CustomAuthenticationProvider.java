@@ -1,8 +1,8 @@
-package com.kravchenko.agency.service;
+package com.kravchenko.agency.security;
 
 import com.kravchenko.agency.domain.Role;
 import com.kravchenko.agency.domain.User;
-import com.kravchenko.agency.repos.UserRepo;
+import com.kravchenko.agency.service.UserService;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -14,14 +14,15 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
-    private final UserRepo userRepo;
+    private final UserService userService;
 
-    public CustomAuthenticationProvider(UserRepo userRepo) {
-        this.userRepo = userRepo;
+    public CustomAuthenticationProvider(UserService userService) {
+        this.userService = userService;
     }
 
     @Override
@@ -35,24 +36,20 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         List<GrantedAuthority> grantedAuths = new ArrayList<>();
         grantedAuths.add(new SimpleGrantedAuthority("ROLE_USER"));
 
-        try{
-            User user = userRepo.findByUsername(name);
-
-            if(user.getRoles().contains(Role.MANAGER))
+        Optional<User> user = userService.findByUsername(name);
+        if(user.isPresent()) {
+            if (user.get().getRoles().contains(Role.MANAGER))
                 grantedAuths.add(new SimpleGrantedAuthority("ROLE_MANAGER"));
 
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            if(passwordEncoder.matches(password, user.getPassword())){
+            if (passwordEncoder.matches(password, user.get().getPassword())) {
                 return new UsernamePasswordAuthenticationToken(
                         name, password, grantedAuths);
             }
-            else return null;
-
-        }catch (NullPointerException npe){
-            return null;
         }
-
+        return null;
     }
+
 
     @Override
     public boolean supports(Class<?> authentication) {

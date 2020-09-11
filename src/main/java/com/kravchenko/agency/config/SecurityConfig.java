@@ -1,6 +1,5 @@
 package com.kravchenko.agency.config;
-
-import com.kravchenko.agency.service.CustomAuthenticationProvider;
+import com.kravchenko.agency.security.CustomAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;

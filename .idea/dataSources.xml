@@ -7,5 +7,11 @@
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://localhost:3306/db_booking</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="Azure SQL Database - demo@book-agency.mysql.database.azure.com" uuid="680d8914-3ee5-4a3f-92c8-c01ac5be5e91">
+      <driver-ref>azure.ms</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</jdbc-driver>
+      <jdbc-url>jdbc:sqlserver://book-agency.mysql.database.azure.com:3306;database=demo</jdbc-url>
+    </data-source>
   </component>
 </project>
